@@ -10,3 +10,11 @@ button {
 mat-spinner {
   margin: auto;
 }
+
+input[type="file"] {
+  visibility: hidden;
+}
+
+div button {
+  margin-bottom: 1rem;
+}
