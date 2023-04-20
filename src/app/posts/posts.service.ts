@@ -15,9 +15,12 @@ export class PostsService {
   constructor(private httpClient: HttpClient, private router: Router) {}
 
   // THe RXJS map is used here to transform the id from the api (_id) into id, so it matches the naming of id in the post model
-  getPosts() {
+  getPosts(postsPerPage: number, currentPage: number) {
+    const queryParams = `?pagesize=${postsPerPage}&page=${currentPage}`;
     this.httpClient
-      .get<{ message: string; posts: any }>('http://localhost:3000/api/posts')
+      .get<{ message: string; posts: any }>(
+        `http://localhost:3000/api/posts${queryParams}`
+      )
       .pipe(
         map((postData) => {
           return postData.posts.map((post) => {

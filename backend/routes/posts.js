@@ -70,8 +70,16 @@ router.put(
   }
 );
 
+// req.query holds the query params
+// the plus sign in front of req.query converts this into a number
 router.get("", (req, res, next) => {
-  Post.find().then((documents) => {
+  const pageSize = +req.query.pagesize;
+  const currentPage = +req.query.page;
+  const postQuery = Post.find();
+  if (pageSize && currentPage) {
+    postQuery.skip(pageSize * (currentPage - 1)).limit(pageSize);
+  }
+  postQuery.then((documents) => {
     res.status(200).json({
       message: "Posts fetched successfully",
       posts: documents,
