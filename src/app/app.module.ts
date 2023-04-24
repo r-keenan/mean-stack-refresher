@@ -16,8 +16,8 @@ import { PostCreateComponent } from './posts/posts-create/posts-create.component
 import { HeaderComponent } from './header/header.component';
 import { PostListComponent } from './posts/posts-list/post-list.component';
 import { AppRoutingModule } from './app-routing.module';
-import { LoginComponent } from './posts/auth/login/login.component';
-import { SignupComponent } from './posts/auth/signup/signup.component';
+import { LoginComponent } from './auth/login/login.component';
+import { SignupComponent } from './auth/signup/signup.component';
 
 @NgModule({
   declarations: [
