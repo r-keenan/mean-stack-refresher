@@ -1,47 +1,15 @@
 const express = require("express");
-const multer = require("multer");
 
 const checkAuth = require("../middleware/check-auth");
+const extractFile = require("../middleware/file");
 const PostsController = require("../controllers/posts");
 
 const router = express.Router();
 
-const MIME_TYPE_MAP = {
-  "image/png": "png",
-  "image/jpeg": "jpg",
-  "image/jpg": "jpg",
-};
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const isValid = MIME_TYPE_MAP[file.mimetype];
-    let error = new Error("Invalid mime type");
-    if (isValid) {
-      error = null;
-    }
-    cb(error, "backend/images");
-  },
-  filename: (req, file, cb) => {
-    const name = file.originalname.toLowerCase().split(" ").join("-");
-    const ext = MIME_TYPE_MAP[file.mimetype];
-    cb(null, `${name}-${Date.now()}.${ext}`);
-  },
-});
-
 // checkAuth protects the route and calls the middleware to see if user is authorized or not
-router.post(
-  "",
-  checkAuth,
-  multer({ storage: storage }).single("image"),
-  PostsController.createPost
-);
+router.post("", checkAuth, extractFile, PostsController.createPost);
 
-router.put(
-  "/:id",
-  checkAuth,
-  multer({ storage: storage }).single("image"),
-  PostsController.updatePost
-);
+router.put("/:id", checkAuth, extractFile, PostsController.updatePost);
 
 // req.query holds the query params
 // the plus sign in front of req.query converts this into a number
